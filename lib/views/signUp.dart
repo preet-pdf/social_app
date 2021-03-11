@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/services/auth.dart';
+import 'package:social_app/services/database.dart';
+import 'package:social_app/views/charRoomsScreen.dart';
 import 'package:social_app/widgets/widgets.dart';
 
 class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -10,8 +14,8 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  AuthMethods authMethods=new AuthMethods();
-  
+  AuthMethods authMethods = new AuthMethods();
+DataBaseMethods databaseMethods=new DataBaseMethods();
   TextEditingController usenameTextEditingController =
       new TextEditingController();
   TextEditingController emailTextEditingController =
@@ -20,10 +24,22 @@ class _SignUpState extends State<SignUp> {
       new TextEditingController();
   signMeUp() {
     if (formKey.currentState.validate()) {
+      Map<String,String> userInfoMap={
+              "name":usenameTextEditingController.text,
+              "email":emailTextEditingController.text
+              ,"dp":""
+            };
       setState(() {
-         isLoading = true;
+        isLoading = true;
       });
-     authMethods.signUpWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((value){print('${value.toString()}');});
+      authMethods
+          .signUpWithEmailAndPassword(emailTextEditingController.text,
+              passwordTextEditingController.text)
+          .then((value) {
+            
+        databaseMethods.uploadUserINfo(userInfoMap);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>ChatRoom()));
+      });
     }
   }
 
@@ -47,7 +63,7 @@ class _SignUpState extends State<SignUp> {
                         child: Column(
                           children: [
                             TextFormField(
-                              autocorrect: true,
+                                autocorrect: true,
                                 validator: (val) {
                                   return val.isEmpty || val.length < 4
                                       ? "ONly usernaem worked"
@@ -58,16 +74,19 @@ class _SignUpState extends State<SignUp> {
                                 decoration:
                                     textFieldInputDecoraion("UserName")),
                             TextFormField(
-                              autocorrect: true,
+                                autocorrect: true,
                                 validator: (val) {
-                                  return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                          null : "Enter correct email";
+                                  return RegExp(
+                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                          .hasMatch(val)
+                                      ? null
+                                      : "Enter correct email";
                                 },
                                 controller: emailTextEditingController,
                                 style: simpleTextFieldStyle(),
                                 decoration: textFieldInputDecoraion("Email")),
                             TextFormField(
-                              autocorrect: true,
+                                autocorrect: true,
                                 obscureText: true,
                                 validator: (val) {
                                   return val.length > 6
@@ -133,12 +152,19 @@ class _SignUpState extends State<SignUp> {
                             "Have An account?",
                             style: TextStyle(color: Colors.white, fontSize: 17),
                           ),
-                          Text(
-                            "SignIn Now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                decoration: TextDecoration.underline),
+                          GestureDetector(
+                                  onTap: (){
+                                    widget.toggle();
+                                  },                    child: Container(
+                              padding: EdgeInsets.symmetric(vertical:8),
+                              child: Text(
+                                "SignIn Now",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
                           )
                         ],
                       ),
