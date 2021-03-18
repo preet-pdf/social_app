@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/helper/helperfunctions.dart';
 import 'package:social_app/services/auth.dart';
 import 'package:social_app/services/database.dart';
 import 'package:social_app/views/charRoomsScreen.dart';
@@ -15,7 +16,8 @@ class _SignUpState extends State<SignUp> {
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
   AuthMethods authMethods = new AuthMethods();
-DataBaseMethods databaseMethods=new DataBaseMethods();
+  DataBaseMethods databaseMethods = new DataBaseMethods();
+
   TextEditingController usenameTextEditingController =
       new TextEditingController();
   TextEditingController emailTextEditingController =
@@ -24,11 +26,6 @@ DataBaseMethods databaseMethods=new DataBaseMethods();
       new TextEditingController();
   signMeUp() {
     if (formKey.currentState.validate()) {
-      Map<String,String> userInfoMap={
-              "name":usenameTextEditingController.text,
-              "email":emailTextEditingController.text
-              ,"dp":""
-            };
       setState(() {
         isLoading = true;
       });
@@ -36,9 +33,21 @@ DataBaseMethods databaseMethods=new DataBaseMethods();
           .signUpWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((value) {
-            
-        databaseMethods.uploadUserINfo(userInfoMap);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>ChatRoom()));
+        if (value != null) {
+          Map<String, String> userInfoMap = {
+            "name": usenameTextEditingController.text,
+            "email": emailTextEditingController.text,
+            "dp": ""
+          };
+          databaseMethods.uploadUserINfo(userInfoMap);
+          HelperFunctions.saveUserEmailSharedPreference(
+              emailTextEditingController.text);
+          HelperFunctions.saveUserNameSharedPreference(
+              usenameTextEditingController.text);
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        }
       });
     }
   }
@@ -153,10 +162,11 @@ DataBaseMethods databaseMethods=new DataBaseMethods();
                             style: TextStyle(color: Colors.white, fontSize: 17),
                           ),
                           GestureDetector(
-                                  onTap: (){
-                                    widget.toggle();
-                                  },                    child: Container(
-                              padding: EdgeInsets.symmetric(vertical:8),
+                            onTap: () {
+                              widget.toggle();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 8),
                               child: Text(
                                 "SignIn Now",
                                 style: TextStyle(
