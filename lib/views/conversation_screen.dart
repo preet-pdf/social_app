@@ -18,12 +18,17 @@ class _ConversationScreenState extends State<ConversationScreen> {
     return StreamBuilder(
         stream: chatMessageStream,
         builder: (context, snapshot) {
-          return snapshot.hasData? ListView.builder(
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context, index) {
-              return MessageTile(snapshot.data.docs[index].data()["message"]);
-            },
-          ):Container();
+          return snapshot.hasData
+              ? ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    return MessageTile(
+                        snapshot.data.docs[index].data()["message"],
+                        snapshot.data.docs[index].data()["sendBy"] ==
+                            Constants.myName);
+                  },
+                )
+              : Container();
         });
   }
 
@@ -32,15 +37,16 @@ class _ConversationScreenState extends State<ConversationScreen> {
       Map<String, dynamic> messageMap = {
         "message": messageEditingController.text,
         "sendBy": Constants.myName,
-        "time":DateTime.now().millisecondsSinceEpoch
+        "time": DateTime.now().millisecondsSinceEpoch
       };
       databaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
       setState(() {
-      messageEditingController.text = "";
+        messageEditingController.text = "";
       });
-     }
+    }
   }
-@override
+
+  @override
   void initState() {
     databaseMethods.getConversationMessages(widget.chatRoomId).then((value) {
       setState(() {
@@ -109,9 +115,40 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
 class MessageTile extends StatelessWidget {
   final String message;
-  MessageTile(this.message);
+  final bool isSendByMe;
+
+  MessageTile(this.message, this.isSendByMe);
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(message,style:TextStyle(color: Colors.white,fontSize: 18),));
+    return Container(
+      padding: EdgeInsets.only(
+          left: isSendByMe ? 0 : 24, right: isSendByMe ? 24 : 0),
+      margin: EdgeInsets.symmetric(vertical: 8),
+      width: MediaQuery.of(context).size.width,
+      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: isSendByMe
+                    ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
+                    : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
+              ),
+              borderRadius: isSendByMe
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(23),
+                      topRight: Radius.circular(23),
+                      bottomLeft: Radius.circular(23),
+                    )
+                  : BorderRadius.only(
+                      topLeft: Radius.circular(23),
+                      topRight: Radius.circular(23),
+                      bottomRight: Radius.circular(23),
+                    )),
+          child: Text(
+            message,
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          )),
+    );
   }
 }

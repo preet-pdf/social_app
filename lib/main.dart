@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/views/University_news.dart';
 import 'package:social_app/views/charRoomsScreen.dart';
 
 import 'helper/authenticate.dart';
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Color(0xff145C9E),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: userIsLoggedIn != null ?  userIsLoggedIn ? ChatRoom() : Authnticate()
+      home: userIsLoggedIn != null ?  userIsLoggedIn ? LoadDataFromFirestore() : Authnticate()
           : Container(
         child: Center(
           child: Authnticate(),
