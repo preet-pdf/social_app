@@ -32,6 +32,15 @@ dependencies:
   firebase_core:
   cloud_firestore:
   shared_preferences:
+  image_picker: 
+  firebase_storage: 
+  random_string: 
+  cached_network_image:
+  google_maps_flutter:
+  font_awesome_flutter: ^8.2.0
+  razorpay_flutter: ^1.1.4
+  toast: ^0.1.5 
+  curved_navigation_bar:
 dev_dependencies:
   flutter_test:
     sdk: flutter

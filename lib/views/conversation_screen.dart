@@ -11,6 +11,7 @@ class ConversationScreen extends StatefulWidget {
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
+
   TextEditingController messageEditingController = new TextEditingController();
   DataBaseMethods databaseMethods = new DataBaseMethods();
   Stream chatMessageStream;
@@ -55,6 +56,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
     });
     super.initState();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
