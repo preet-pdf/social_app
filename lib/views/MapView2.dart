@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:social_app/widgets/widgets.dart';
 
 class MapView2 extends StatefulWidget {
   @override
@@ -24,19 +25,7 @@ class MapView2State extends State<MapView2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
-        leading: IconButton(
-            icon: Icon(FontAwesomeIcons.arrowLeft),
-            //color: Colors.blueAccent, //(#DF6589FF),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        title: Text("CHARUSAT University"),
-        actions: <Widget>[
-          IconButton(icon: Icon(FontAwesomeIcons.search), onPressed: () {}),
-        ],
-      ),
+      appBar: appBarMain(context),
       body: Stack(
         children: <Widget>[
           _buildGoogleMap(context),

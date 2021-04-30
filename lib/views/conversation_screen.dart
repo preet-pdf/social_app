@@ -134,8 +134,8 @@ class MessageTile extends StatelessWidget {
           decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isSendByMe
-                    ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                    : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
+                    ? [const Color(0xff007EF4), const Color(0xff210070)]
+                    : [const Color(0x1AFFFFFF), const Color(0xff213970)],
               ),
               borderRadius: isSendByMe
                   ? BorderRadius.only(

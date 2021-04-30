@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:social_app/services/crud.dart';
 import 'package:social_app/views/create_blog.dart';
 import 'package:social_app/widgets/custom_button.dart';
+import 'package:social_app/widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,6 +17,8 @@ class _HomePageState extends State<HomePage> {
   Stream blogsStream;
 
   Widget BlogsList() {
+    
+
     return Container(
       child: blogsStream != null
           ? Column(
@@ -23,7 +26,7 @@ class _HomePageState extends State<HomePage> {
                 StreamBuilder(
                   stream: blogsStream,
                   builder: (BuildContext context, snapshot) {
-                    return ListView.builder(
+                    return snapshot.data!=null ?ListView.builder(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         itemCount: snapshot.data.docs.length,
                         shrinkWrap: true,
@@ -36,7 +39,9 @@ class _HomePageState extends State<HomePage> {
                                 snapshot.data.docs[index].data()['desc'],
                             imgUrl: snapshot.data.docs[index].data()['imgUrl'],
                           );
-                        });
+                        }):Center(
+        child: CircularProgressIndicator(),
+      );
                   },
                 )
               ],
@@ -46,10 +51,15 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             ),
     );
+    
+    
+    
+    
   }
 
   @override
   void initState() {
+    
     crudMethods.getData().then((result) {
       setState(() {
         
@@ -62,24 +72,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Social",
-              style: TextStyle(fontSize: 22),
-            ),
-            Text(
-              "Feed",
-              style: TextStyle(fontSize: 22, color: Colors.blue),
-            )
-          ],
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),
-      body: BlogsList(),
+      appBar: appBarMain(context),
+      body: SingleChildScrollView(child: BlogsList()),
       floatingActionButton: Container(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Row(
@@ -91,13 +85,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => CreateBlog()));
               },
             )
-            /*FloatingActionButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CreateBlog()));
-              },
-              child: Icon(Icons.add),
-            )*/
+            
           ],
         ),
       ),
@@ -105,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class BlogsTile extends StatelessWidget {
+class BlogsTile extends StatefulWidget {
   String imgUrl, title, description, authorName;
   BlogsTile(
       {@required this.imgUrl,
@@ -113,6 +101,11 @@ class BlogsTile extends StatelessWidget {
       @required this.description,
       @required this.authorName});
 
+  @override
+  _BlogsTileState createState() => _BlogsTileState();
+}
+
+class _BlogsTileState extends State<BlogsTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -123,7 +116,7 @@ class BlogsTile extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
             child: CachedNetworkImage(
-              imageUrl: imgUrl,
+              imageUrl: widget.imgUrl,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
@@ -141,7 +134,7 @@ class BlogsTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  title ?? 'default value',
+                  widget.title ?? 'default value',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
                 ),
@@ -149,13 +142,13 @@ class BlogsTile extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  description ?? 'default value',
+                  widget.description ?? 'default value',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
                   height: 4,
                 ),
-                Text(authorName ?? 'default value')
+                Text(widget.authorName ?? 'default value')
               ],
             ),
           )

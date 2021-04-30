@@ -43,9 +43,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff1F1F1F),
+        scaffoldBackgroundColor: Color(0xff213970),
         primarySwatch: Colors.blue,
-        primaryColor: Color(0xff145C9E),
+        primaryColor: Color(0xff210070),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: userIsLoggedIn != null ?  userIsLoggedIn ? HomePageStart() : Authnticate()

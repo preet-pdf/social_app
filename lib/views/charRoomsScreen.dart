@@ -61,16 +61,6 @@ bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
         items: <Widget>[
           Icon(
-            Icons.add,
-            size: 30,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.list,
-            size: 30,
-            color: Colors.white,
-          ),
-          Icon(
             Icons.people,
             size: 30,
             color: Colors.white,
@@ -82,6 +72,16 @@ bottomNavigationBar: CurvedNavigationBar(
           ),
           Icon(
             Icons.list,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.map,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.money,
             size: 30,
             color: Colors.white,
           ),
@@ -168,7 +168,21 @@ getUserInfogetChats() async {
     return Scaffold(
 backgroundColor: Colors.black26,
       appBar: AppBar(
-        title: Text("CharuSocial"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Charu",
+              style: TextStyle(fontSize: 22),
+            ),
+            Text(
+              "Social",
+              style: TextStyle(fontSize: 22, color: Colors.blue),
+            )
+          ],
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
         actions: [
           GestureDetector(
             onTap: () {

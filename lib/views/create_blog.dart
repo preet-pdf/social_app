@@ -115,11 +115,11 @@ class _CreateBlogState extends State<CreateBlog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Flutter",
+              "Charu",
               style: TextStyle(fontSize: 22),
             ),
             Text(
-              "Blog",
+              "Social",
               style: TextStyle(fontSize: 22, color: Colors.blue),
             )
           ],

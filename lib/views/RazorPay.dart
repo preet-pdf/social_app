@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:social_app/widgets/widgets.dart';
 import 'package:toast/toast.dart';
 
 class rpay extends StatefulWidget {
@@ -66,16 +67,18 @@ class _rpayState extends State<rpay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Pay your bills"),
-      ),
+      appBar: appBarMain(context),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
           children: [
             TextField(
               controller: textEditingController,
-              decoration: InputDecoration(hintText: "amount to pay",),
+              decoration: InputDecoration(
+                hintText: "amount to pay",
+                hintStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
+              style: new TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
             ),
             SizedBox(
               height: 12,

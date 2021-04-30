@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/widgets/widgets.dart';
 
 class LoadDataFromFirestore extends StatefulWidget {
   @override
@@ -21,9 +22,7 @@ class _LoadDataFromFirestoreState extends State<LoadDataFromFirestore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("CharuSocial"),
-      ),
+      appBar: appBarMain(context,),
       body: _showDrivers(),
     );
   }
@@ -36,12 +35,38 @@ class _LoadDataFromFirestoreState extends State<LoadDataFromFirestore> {
       return ListView.builder(
         //primary: false,
         itemCount: querySnapshot.docs.length,
-        
+
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text("${querySnapshot.docs[index].data()['Title']}",style: TextStyle(color: Colors.white, fontSize: 16)),
-            leading: Text(index.toRadixString(2),style: TextStyle(color: Colors.white, fontSize: 16)),
-            subtitle: Text("${querySnapshot.docs[index].data()['Disc']}",style: TextStyle(color: Colors.white, fontSize: 16)),
+          return Column(
+            children: [
+              Container(
+                  child: Column(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("${querySnapshot.docs[index].data()['Title']}",
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(index.toRadixString(2),
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text("${querySnapshot.docs[index].data()['Disc']}",
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Divider(color: Colors.blueAccent)
+                ],
+              )),
+            ],
 
 //             child: Column(
 //               children: <Widget>[
@@ -68,6 +93,9 @@ class _LoadDataFromFirestoreState extends State<LoadDataFromFirestore> {
 
   //get firestore instance
   getDriversList() async {
-    return await FirebaseFirestore.instance.collection('University').orderBy("index", descending: false).get();
+    return await FirebaseFirestore.instance
+        .collection('University')
+        .orderBy("index", descending: false)
+        .get();
   }
 }

@@ -46,7 +46,7 @@ class _SignUpState extends State<SignUp> {
               usenameTextEditingController.text);
           HelperFunctions.saveUserLoggedInSharedPreference(true);
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+              context, MaterialPageRoute(builder: (context) => HomePageStart()));
         }
       });
     }
@@ -131,8 +131,8 @@ class _SignUpState extends State<SignUp> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
                                 gradient: LinearGradient(colors: [
-                                  const Color(0xff007EF4),
-                                  const Color(0xff2A75BC)
+                                  const Color(0xff210070),
+                            const Color(0xff2A75BC)
                                 ])),
                             child: Text(
                               "Sign up",
